@@ -66,13 +66,12 @@ class ezcBaseFeatures
     private static $imageIdentify = null;
 
     /**
-      * Used to store the operating system.
-      *
-      * It is initialized in the {@link os()} function.
-      *
-      * @var string
-      */
-    private static $os = null;
+     * Used to store the operating system.
+     *
+     * It is initialized in the {@link os()} function.
+     *
+     */
+    private static ?string $os = null;
 
     /**
      * Determines if hardlinks are supported.
@@ -225,7 +224,7 @@ class ezcBaseFeatures
             }
             return false;
         }
-        catch ( ezcBaseAutoloadException $e )
+        catch ( ezcBaseAutoloadException )
         {
             return false;
         }
@@ -246,11 +245,11 @@ class ezcBaseFeatures
         if ( is_null( self::$os ) )
         {
             $uname = php_uname( 's' );
-            if ( substr( $uname, 0, 7 ) == 'Windows' )
+            if ( str_starts_with($uname, 'Windows') )
             {
                 self::$os = 'Windows';
             }
-            elseif ( substr( $uname, 0, 3 ) == 'Mac' )
+            elseif ( str_starts_with($uname, 'Mac') )
             {
                 self::$os = 'Mac';
             }
@@ -287,7 +286,7 @@ class ezcBaseFeatures
     {
         if ( array_key_exists( 'PATH', $_ENV ) )
         {
-            $envPath = trim( $_ENV['PATH'] );
+            $envPath = trim( (string) $_ENV['PATH'] );
         }
         else if ( ( $envPath = getenv( 'PATH' ) ) !== false )
         {

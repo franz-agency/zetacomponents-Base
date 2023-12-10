@@ -36,10 +36,9 @@ class ezcBaseStruct
      * Throws a BasePropertyNotFound exception.
      *
      * @param string $name
-     * @param mixed $value
      * @ignore
      */
-    final public function __set( $name, $value )
+    final public function __set( $name, mixed $value )
     {
         throw new ezcBasePropertyNotFoundException( $name );
     }

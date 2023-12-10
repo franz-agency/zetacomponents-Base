@@ -35,29 +35,28 @@ class ezcBase
     /**
      * Used for dependency checking, to check for a PHP extension.
      */
-    const DEP_PHP_EXTENSION = "extension";
+    final public const DEP_PHP_EXTENSION = "extension";
 
     /**
      * Used for dependency checking, to check for a PHP version.
      */
-    const DEP_PHP_VERSION = "version";
+    final public const DEP_PHP_VERSION = "version";
 
     /**
      * Denotes the production mode
      */
-    const MODE_PRODUCTION = 0;
+    final public const MODE_PRODUCTION = 0;
 
     /**
      * Denotes the development mode
      */
-    const MODE_DEVELOPMENT = 1;
+    final public const MODE_DEVELOPMENT = 1;
 
     /**
      * Indirectly it determines the path where the autoloads are stored.
      *
-     * @var string
      */
-    private static $libraryMode = "devel";
+    private static string $libraryMode = "devel";
 
     /**
      * Contains the current working directory, which is used when the
@@ -78,7 +77,7 @@ class ezcBase
      * Contains which development mode is used. It's "development" by default,
      * because of backwards compatibility reasons.
      */
-    private static $runMode = self::MODE_DEVELOPMENT;
+    private static int $runMode = self::MODE_DEVELOPMENT;
 
     /**
      * Stores info with additional paths where autoload files and classes for
@@ -89,7 +88,7 @@ class ezcBase
      *
      * @var array(string=>array)
      */
-    protected static $repositoryDirs = array();
+    protected static $repositoryDirs = [];
 
     /**
      * This variable stores all the elements from the autoload arrays. When a
@@ -97,7 +96,7 @@ class ezcBase
      *
      * @var array(string=>string)
      */
-    protected static $autoloadArray = array();
+    protected static $autoloadArray = [];
 
     /**
      * This variable stores all the elements from the autoload arrays for
@@ -106,19 +105,17 @@ class ezcBase
      *
      * @var array(string=>string)
      */
-    protected static $externalAutoloadArray = array();
+    protected static $externalAutoloadArray = [];
 
     /**
      * Options for the ezcBase class.
      *
-     * @var ezcBaseOptions
      */
-    static private $options;
+    static private ?\ezcBaseAutoloadOptions $options = null;
 
     /**
      * Associates an option object with this static class.
      *
-     * @param ezcBaseAutoloadOptions $options
      */
     static public function setOptions( ezcBaseAutoloadOptions $options )
     {
@@ -169,7 +166,7 @@ class ezcBase
 
         // Not cached, so load the autoload from the package.
         // Matches the first and optionally the second 'word' from the classname.
-        $fileNames = array();
+        $fileNames = [];
         if ( preg_match( "/^([a-z0-9]*)([A-Z][a-z0-9]*)?([A-Z][a-z0-9]*)?/", $className, $matches ) !== false )
         {
             $autoloadFile = "";
@@ -257,7 +254,7 @@ class ezcBase
         }
 
         // Get the path to the components.
-        $baseDir = dirname( __FILE__ );
+        $baseDir = __DIR__;
 
         switch ( ezcBase::$libraryMode )
         {
@@ -328,7 +325,7 @@ class ezcBase
 
             if ( file_exists( $extraDir['autoloadDirPath'] . '/' . $fileName ) )
             {
-                $array = array();
+                $array = [];
                 $originalArray = require( $extraDir['autoloadDirPath'] . '/' . $fileName );
 
                 // Building paths.
@@ -367,21 +364,21 @@ class ezcBase
         {
             case "devel":
             case "tarball":
-                list( $first, $second ) = explode( '/', $file, 2 );
+                [$first, $second] = explode( '/', $file, 2 );
                 $file = $first . "/src/" . $second;
                 break;
 
             case "custom":
-                list( $first, $second ) = explode( '/', $file, 2 );
+                [$first, $second] = explode( '/', $file, 2 );
                 // Add the "src/" after the package name.
                 if ( $first == 'Base' || $first == 'UnitTest' )
                 {
-                    list( $first, $second ) = explode( '/', $file, 2 );
+                    [$first, $second] = explode( '/', $file, 2 );
                     $file = $first . "/src/" . $second;
                 }
                 else
                 {
-                    list( $first, $second, $third ) = explode( '/', $file, 3 );
+                    [$first, $second, $third] = explode( '/', $file, 3 );
                     $file = $first . '/' . $second . "/src/" . $third;
                 }
                 break;
@@ -429,9 +426,8 @@ class ezcBase
      *
      * @param string $component
      * @param int $type
-     * @param mixed $value
      */
-    public static function checkDependency( $component, $type, $value )
+    public static function checkDependency( $component, $type, mixed $value )
     {
         switch ( $type )
         {
@@ -473,9 +469,9 @@ class ezcBase
      */
     public static function getRepositoryDirectories()
     {
-        $autoloadDirs = array();
+        $autoloadDirs = [];
         ezcBase::setPackageDir();
-        $repositoryDir = self::$currentWorkingDirectory ? self::$currentWorkingDirectory : ( realpath( dirname( __FILE__ ) . '/../../' ) );
+        $repositoryDir = self::$currentWorkingDirectory ?: realpath( __DIR__ . '/../../' );
         $autoloadDirs['ezc'] = new ezcBaseRepositoryDirectory( ezcBaseRepositoryDirectory::TYPE_INTERNAL, $repositoryDir, $repositoryDir . "/autoload" );
 
         foreach ( ezcBase::$repositoryDirs as $extraDirKey => $extraDirArray )
@@ -586,7 +582,7 @@ class ezcBase
         // add info to $repositoryDirs
         if ( $prefix === null )
         {
-            $array = array( 'basePath' => $basePath, 'autoloadDirPath' => $autoloadDirPath );
+            $array = ['basePath' => $basePath, 'autoloadDirPath' => $autoloadDirPath];
 
             // add info to the list of extra dirs
             ezcBase::$repositoryDirs[] = $array;
@@ -599,7 +595,7 @@ class ezcBase
             }
 
             // add info to the list of extra dirs, and use the prefix to identify the new repository.
-            ezcBase::$repositoryDirs[$prefix] = array( 'basePath' => $basePath, 'autoloadDirPath' => $autoloadDirPath );
+            ezcBase::$repositoryDirs[$prefix] = ['basePath' => $basePath, 'autoloadDirPath' => $autoloadDirPath];
         }
     }
 
@@ -630,7 +626,7 @@ class ezcBase
      */
     public static function setRunMode( $runMode )
     {
-        if ( !in_array( $runMode, array( ezcBase::MODE_PRODUCTION, ezcBase::MODE_DEVELOPMENT ) ) )
+        if ( !in_array( $runMode, [ezcBase::MODE_PRODUCTION, ezcBase::MODE_DEVELOPMENT] ) )
         {
             throw new ezcBaseValueException( 'runMode', $runMode, 'ezcBase::MODE_PRODUCTION or ezcBase::MODE_DEVELOPMENT' );
         }

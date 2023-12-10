@@ -35,12 +35,12 @@ class ezcBasePropertyPermissionException extends ezcBaseException
     /**
      * Used when the property is read-only.
      */
-    const READ  = 1;
+    final public const READ  = 1;
 
     /**
      * Used when the property is write-only.
      */
-    const WRITE = 2;
+    final public const WRITE = 2;
 
     /**
      * Constructs a new ezcPropertyPermissionException for the property $name.

@@ -51,7 +51,7 @@ abstract class ezcBaseOptions implements ArrayAccess, Iterator
      *         If the value for a property is out of range.
      * @param array(string=>mixed) $options The initial options to set.
      */
-    public function __construct( array $options = array() )
+    public function __construct( array $options = [] )
     {
         foreach ( $options as $option => $value )
         {
@@ -116,7 +116,7 @@ abstract class ezcBaseOptions implements ArrayAccess, Iterator
      * @throws ezcBasePropertyPermissionException
      *         if the property to be set is a read-only property.
      */
-    abstract public function __set( $propertyName, $propertyValue );
+    abstract public function __set( $propertyName, mixed $propertyValue );
 
     /**
      * Returns if a option exists.
@@ -170,7 +170,7 @@ abstract class ezcBaseOptions implements ArrayAccess, Iterator
      * @param mixed $propertyValue The value for the option.
      */
     #[ReturnTypeWillChange]
-    public function offsetSet( $propertyName, $propertyValue )
+    public function offsetSet( $propertyName, mixed $propertyValue )
     {
         $this->__set( $propertyName, $propertyValue );
     }

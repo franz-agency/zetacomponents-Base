@@ -45,21 +45,14 @@ class ezcBaseMetaData
      */
     public function __construct( $installMethod = NULL )
     {
-        $installMethod = $installMethod !== NULL ? $installMethod : ezcBase::getInstallMethod();
+        $installMethod ??= ezcBase::getInstallMethod();
 
         // figure out which reader to use
-        switch ( $installMethod )
-        {
-            case 'tarball':
-                $this->reader = new ezcBaseMetaDataTarballReader;
-                break;
-            case 'pear':
-                $this->reader = new ezcBaseMetaDataPearReader;
-                break;
-            default:
-                throw new ezcBaseMetaDataReaderException( "Unknown install method '$installMethod'." );
-                break;
-        }
+        $this->reader = match ($installMethod) {
+            'tarball' => new ezcBaseMetaDataTarballReader,
+            'pear' => new ezcBaseMetaDataPearReader,
+            default => throw new ezcBaseMetaDataReaderException( "Unknown install method '$installMethod'." ),
+        };
     }
 
     /**

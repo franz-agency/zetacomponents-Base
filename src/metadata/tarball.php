@@ -35,16 +35,15 @@ class ezcBaseMetaDataTarballReader
 {
     /**
      * Contains the handler to the XML file containing the release information.
-     * @var SimpleXmlElement
      */
-    private $xml;
+    private readonly \SimpleXMLElement|bool $xml;
 
     /**
      * Creates the reader object and opens the release-info file.
      */
     public function __construct()
     {
-        $filename = dirname( __FILE__ ) . '/../../../release-info.xml';
+        $filename = __DIR__ . '/../../../release-info.xml';
         $this->xml = simplexml_load_file( $filename );
     }
 
@@ -152,7 +151,7 @@ class ezcBaseMetaDataTarballReader
         }
 
         // We always add the Base dependency even though it's not in the dependency file.
-        $deps = array();
+        $deps = [];
         $deps['Base'] = (string) $baseVersion;
 
         if ( !isset( $root->package ) )

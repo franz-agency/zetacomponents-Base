@@ -33,38 +33,31 @@
 class ezcBaseFileFindContext extends ezcBaseStruct
 {
     /**
-     * The list of files
-     *
-     * @var array(string)
-     */
-    public $elements;
-
-    /**
-     * The number of files
-     *
-     * @var int
-     */
-    public $count;
-
-    /**
-     * The total file size of all files found
-     *
-     * @var int
-     */
-    public $size;
-
-    /**
      * Constructs a new ezcBaseFileFindContext with initial values.
      *
      * @param array(string) $elements
      * @param int $count
      * @param int $size
      */
-    public function __construct( $elements = array(), $count = 0, $size = 0 )
+    public function __construct(
+        /**
+         * The list of files
+         *
+         * @var array(string)
+         */
+        public $elements = [],
+        /**
+         * The number of files
+         *
+         */
+        public $count = 0,
+        /**
+         * The total file size of all files found
+         *
+         */
+        public $size = 0
+    )
     {
-        $this->elements = $elements;
-        $this->count = $count;
-        $this->size = $size;
     }
 
     /**

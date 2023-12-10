@@ -35,33 +35,12 @@ class ezcBaseRepositoryDirectory extends ezcBaseStruct
     /**
      * Specifies that the entry is for the eZ Components repository.
      */
-    const TYPE_INTERNAL = 0;
+    final public const TYPE_INTERNAL = 0;
 
     /**
      * Specifies that the entry is for an external (user defined) repository.
      */
-    const TYPE_EXTERNAL = 1;
-
-    /**
-     * The $type is one of the two TYPE_* constants defined in this class.
-     *
-     * @var string
-     */
-    public $type;
-
-    /**
-     * The path to the configured repository.
-     *
-     * @var string
-     */
-    public $basePath;
-
-    /**
-     * The path to the autoload files.
-     *
-     * @var string
-     */
-    public $autoloadPath;
+    final public const TYPE_EXTERNAL = 1;
 
     /**
      * Constructs a new ezcBaseRepositoryDirectory of type $type with base path
@@ -71,11 +50,24 @@ class ezcBaseRepositoryDirectory extends ezcBaseStruct
      * @param string $basePath
      * @param string $autoloadPath
      */
-    public function __construct( $type, $basePath, $autoloadPath )
+    public function __construct(
+        /**
+         * The $type is one of the two TYPE_* constants defined in this class.
+         *
+         */
+        public $type,
+        /**
+         * The path to the configured repository.
+         *
+         */
+        public $basePath,
+        /**
+         * The path to the autoload files.
+         *
+         */
+        public $autoloadPath
+    )
     {
-        $this->type = $type;
-        $this->basePath = $basePath;
-        $this->autoloadPath = $autoloadPath;
     }
 
     /**

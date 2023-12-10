@@ -43,7 +43,7 @@ class ezcBaseAutoloadException extends ezcBaseException
      */
     function __construct( $className, $files, $dirs )
     {
-        $paths = array();
+        $paths = [];
         foreach ( $dirs as $dir )
         {
             $paths[] = realpath( $dir->autoloadPath );

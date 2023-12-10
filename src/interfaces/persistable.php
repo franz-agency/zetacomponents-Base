@@ -49,7 +49,6 @@ interface ezcBasePersistable
     /**
      * Accepts an array containing data for one or more of the class' properties.
      *
-     * @param array $properties
      */
     public function setState( array $properties );
 }

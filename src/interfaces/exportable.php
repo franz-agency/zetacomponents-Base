@@ -40,7 +40,6 @@ interface ezcBaseExportable
      * This method must return a new instance of the class it is implemented
      * in, which has its properties set from the given $state array.
      *
-     * @param array $state
      * @return object
      */
     public static function __set_state( array $state );
